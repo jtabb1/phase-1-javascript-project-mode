@@ -45,19 +45,22 @@ function createQuoteLi(quote) {
     sp.innerText = 'Your rating: ';
 
     const inputRating = document.createElement('input');
-    inputRating.id = `rating${quote.id}`;
+    inputRating.id = `rating${quote._id}`;
     inputRating.disabled = 'disabled';
     inputRating.innerHTML = 0;
 
     const minusBtn = document.createElement('button');
-    minusBtn.id = `minus${quote.id}`;
+    minusBtn.id = `minus${quote._id}`;
     minusBtn.innerHTML = 'Minus 1';
     // minusBtn.addEventListener('click', minusOne);
 
     const plusBtn = document.createElement('button');
-    plusBtn.id = `plus${quote.id}`;
+    plusBtn.id = `plus${quote._id}`;
     plusBtn.innerHTML = 'Plus 1';
-    // plusBtn.addEventListener('click', plusOne);
+    plusBtn.addEventListener('click', plusOne);
+    console.log(quote._id);
+    console.log(plusBtn.id);
+
 
     const p3 = document.createElement('p');
     p3.append(br);
@@ -66,6 +69,10 @@ function createQuoteLi(quote) {
     li.append(p1, p2, minusBtn, plusBtn, p3);
 
     return li;
+}
+
+function plusOne(e) {
+    const quoteId = '';
 }
 
 function addNavListeners() {
