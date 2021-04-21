@@ -50,12 +50,12 @@ function createQuoteLi(quote) {
     inputRating.innerHTML = 0;
 
     const minusBtn = document.createElement('button');
-    minusBtn.id = `minus${quote._id}`;
+    minusBtn.id = `minus1${quote._id}`;
     minusBtn.innerHTML = 'Minus 1';
     // minusBtn.addEventListener('click', minusOne);
 
     const plusBtn = document.createElement('button');
-    plusBtn.id = `plus${quote._id}`;
+    plusBtn.id = `plus1_${quote._id}`;
     plusBtn.innerHTML = 'Plus 1';
     plusBtn.addEventListener('click', plusOne);
     console.log(quote._id);
@@ -72,7 +72,10 @@ function createQuoteLi(quote) {
 }
 
 function plusOne(e) {
-    const quoteId = '';
+    const elementId = e.target.id;
+    console.log(elementId);
+    console.log(elementId.slice(6));
+    console.log(elementId);
 }
 
 function addNavListeners() {
