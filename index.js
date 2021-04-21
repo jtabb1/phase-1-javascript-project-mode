@@ -20,6 +20,7 @@ function getQuotes(page) {
 
 function showQuotes(jsonObj) {
     clearQuotesList();
+
     const list = document.querySelector('#quote-list')
     jsonObj.results.forEach(quote => {
         const li = createQuoteLi(quote);
@@ -59,10 +60,10 @@ function createQuoteLi(quote) {
     // plusBtn.addEventListener('click', plusOne);
 
     const p3 = document.createElement('p');
-    p3.innerText = quote.content;
+    p3.append(br);
 
     p2.append(sp, inputRating);
-    li.append(p1, p2, minusBtn, plusBtn);
+    li.append(p1, p2, minusBtn, plusBtn, p3);
 
     return li;
 }
