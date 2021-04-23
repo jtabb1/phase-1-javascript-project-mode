@@ -3,8 +3,12 @@ body {background-color: lightsteelblue;}
 hr {
     border-color: lightgray; 
 }
+/*
+.hidden {
+    display: none;
+}
 
-/* Thanks, John Souza, for the styling hints:
+/* Thanks, John Souza, for the styling hints below:
    https://github.com/jls-github/jokes-app
 */
 
