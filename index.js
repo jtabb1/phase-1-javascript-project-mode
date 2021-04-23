@@ -20,7 +20,6 @@ function getQuotes(page) {
 
 function showQuotes(jsonObj) {
     clearQuotesList();
-
     const list = document.querySelector('#quote-list')
     jsonObj.results.forEach(quote => {
         const li = createQuoteLi(quote);
@@ -176,7 +175,11 @@ function showOther(e) {
 
 function showMyFavorites () {
     clearQuotesList();
+    const quotesUl = document.getElementById("quote-list");
     const faves = getMyFavorites();
+    faves.forEach( fave => {
+        quotesUl.append(makeFaveLi(fave));
+    });
 }
 
 function getMyFavorites () {
@@ -191,6 +194,33 @@ function getMyFavorites () {
     ratingArr.sort((a,b) => b.rating - a.rating);
     console.log(ratingArr);
     return ratingArr;
+}
+
+function makeFaveLi(fave){
+    const quoteId = fave.quoteId;
+    const rating = fave.rating;
+    const quote = rating + ': ' + document.body.dataset[`quote_${quoteId}`];
+    const author = document.body.dataset[`author${quoteId}`];
+
+    const li = document.createElement('li');
+
+    const bq = document.createElement('blockquote');
+    bq.classname = 'blockquote';
+
+    const p = document.createElement('p');
+    p.className = 'mb-0';
+    p.innerHTML = quote;
+
+    const fr = document.createElement('footer');
+    fr.className = 'blockquote-footer';
+    fr.innerHTML = author;
+
+    const br = document.createElement('br');
+
+    bq.append(p, fr, br);
+    li.append(bq);
+
+    return li;
 }
 
 
