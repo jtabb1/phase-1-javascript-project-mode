@@ -139,7 +139,7 @@ function addNavListeners() {
     });
     forwardBtn2.addEventListener('click', () => {
         nextPage();
-    });
+    }); 
     showOtherBtn2.addEventListener('click', (e) => {
         showOther(e);
     });
@@ -161,17 +161,37 @@ function showOther(e) {
     const msg = e.target.innerHTML;
     if (msg === "Show My Favorites") {
         showMyFavorites();
-        e.target.innerHTML = 'Continue Rating Quotes'
+        document.getElementById('show-other1')
+        .innerHTML = 'Continue Rating Quotes';
+        document.getElementById('show-other2')
+        .innerHTML = 'Continue Rating Quotes';
     } else {
         getQuotes(curPage).then(showQuotes).catch(console.log);
-        e.target.innerHTML = 'Show My Favorites'
+        document.getElementById('show-other1')
+        .innerHTML = 'Show My Favorites';
+        document.getElementById('show-other2')
+        .innerHTML = 'Show My Favorites';
     }
-}
+} 
 
 function showMyFavorites () {
     clearQuotesList();
+    const faves = getMyFavorites();
 }
 
+function getMyFavorites () {
+    const ratingArr = [];
+    const dataDiv = document.getElementById('data-div');
+    const quoteIds = dataDiv.className.split(' ');
+    quoteIds.forEach( qteId => {
+        const num = parseInt(
+            document.body.dataset[`rating${qteId}`]);
+        ratingArr.push({rating: num, quoteId: qteId});
+    })
+    ratingArr.sort((a,b) => b.rating - a.rating);
+    console.log(ratingArr);
+    return ratingArr;
+}
 
 
 }); // <= for the DOMContentLoaded function way above
