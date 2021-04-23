@@ -84,6 +84,8 @@ function recordQuote(quote) {
 
 }
 
+let tags = ['we', 'ds', 'bgrb', 'rtgrte', 'trg'];
+console.log(writeThemes(tags));
 //
 // Test the below function with various length arrays:
 function writeThemes(tags) {
