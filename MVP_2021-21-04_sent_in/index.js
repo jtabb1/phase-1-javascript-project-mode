@@ -73,7 +73,6 @@ function plusOne(e) {
     const inputRating = document.getElementById(`rating${quoteId}`);
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = ++rating;
-    document.body.dataset[`rating${quoteId}`] = rating;
 }
 
 function minusOne(e) {
@@ -82,7 +81,6 @@ function minusOne(e) {
     const inputRating = document.getElementById(`rating${quoteId}`);
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = --rating;
-    // console.log(document.body.dataset[`rating${quoteId}`]);
 }
 
 function addNavListeners() {

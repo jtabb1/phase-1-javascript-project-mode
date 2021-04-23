@@ -1,13 +1,26 @@
 body {background-color: lightsteelblue;}
 
 hr {
-    /* color: black;
-    background-color: black; */
-    border-color: lightgray;
-    /* border-color: black; */
-    /* border-color: red; */
+    border-color: lightgray; 
 }
 
-/* 
-8a2be2 : purple?
+/* Thanks, John Souza, for the styling hints:
+   https://github.com/jls-github/jokes-app
 */
+
+button {
+    background-color: #34568B;
+    color: white;
+}
+
+.app-title {
+    text-align: center;
+}
+
+.quotes-container {
+    border: 2px solid black;
+    background: white;
+    padding: 5px;
+    margin-bottom: 10px;
+    box-shadow: 5px 5px 1px;
+}
