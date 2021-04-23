@@ -7,6 +7,20 @@ hr {
 .hidden {
     display: none;
 }
+
+.btn-holder {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.center-btns {
+    display: flex;
+    justify-content: center;
+    grid-column: 2;
+}
+
+
+
 /*
 .hidden {
     display: none;
