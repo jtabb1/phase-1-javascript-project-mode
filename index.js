@@ -160,16 +160,10 @@ function showOther(e) {
     const msg = e.target.innerHTML;
     if (msg === "Show My Favorites") {
         showMyFavorites();
-        document.getElementById('show-other1')
-        .innerHTML = 'Continue Rating Quotes';
-        document.getElementById('show-other2')
-        .innerHTML = 'Continue Rating Quotes';
+        domChange4ShowMyFavorites();
     } else {
         getQuotes(curPage).then(showQuotes).catch(console.log);
-        document.getElementById('show-other1')
-        .innerHTML = 'Show My Favorites';
-        document.getElementById('show-other2')
-        .innerHTML = 'Show My Favorites';
+        domChange4ContinueRatingQuotes();
     }
 } 
 
@@ -180,6 +174,24 @@ function showMyFavorites () {
     faves.forEach( fave => {
         quotesUl.append(makeFaveLi(fave));
     });
+}
+
+function domChange4ShowMyFavorites() {
+        document.getElementById('show-other1').innerHTML = 'Continue Rating Quotes';
+        document.getElementById('show-other2').innerHTML = 'Continue Rating Quotes';
+        document.getElementById('forward1').classList.add('hidden');
+        document.getElementById('back1').classList.add('hidden');
+        document.getElementById('forward2').classList.add('hidden');
+        document.getElementById('back2').classList.add('hidden');
+}
+
+function domChange4ContinueRatingQuotes() {
+        document.getElementById('show-other1').innerHTML = 'Show My Favorites';
+        document.getElementById('show-other2').innerHTML = 'Show My Favorites';
+        document.getElementById('forward1').classList.remove('hidden');
+        document.getElementById('back1').classList.remove('hidden');
+        document.getElementById('forward2').classList.remove('hidden');
+        document.getElementById('back2').classList.remove('hidden');
 }
 
 function getMyFavorites () {
@@ -225,3 +237,4 @@ function makeFaveLi(fave){
 
 
 }); // <= for the DOMContentLoaded function way above
+
