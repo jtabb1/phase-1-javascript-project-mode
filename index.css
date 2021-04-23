@@ -3,6 +3,10 @@ body {background-color: lightsteelblue;}
 hr {
     border-color: lightgray; 
 }
+
+.hidden {
+    display: none;
+}
 /*
 .hidden {
     display: none;
@@ -13,7 +17,7 @@ hr {
 */
 
 button {
-    background-color: #34568B;
+    background-color: #34568B; /* 2020 Color of the Year */
     color: white;
 }
 
