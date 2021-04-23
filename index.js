@@ -81,13 +81,8 @@ function recordQuote(quote) {
     document.body.dataset[`author${quote._id}`] = quote.author;
     document.body.dataset[`arSlug${quote._id}`] = quote.authorSlug;
     document.body.dataset[`themes${quote._id}`] = writeThemes(quote.tags);
-
 }
 
-let tags = ['we', 'ds', 'bgrb', 'rtgrte', 'trg'];
-console.log(writeThemes(tags));
-//
-// Test the below function with various length arrays:
 function writeThemes(tags) {
     const len = tags.length;
     if (len < 3) {
@@ -163,8 +158,20 @@ function prevPage() {
 }
 
 function showOther(e) {
-
+    const msg = e.target.innerHTML;
+    if (msg === "Show My Favorites") {
+        showMyFavorites();
+        e.target.innerHTML = 'Continue Rating Quotes'
+    } else {
+        getQuotes(curPage).then(showQuotes).catch(console.log);
+        e.target.innerHTML = 'Show My Favorites'
+    }
 }
+
+function showMyFavorites () {
+    clearQuotesList();
+}
+
 
 
 }); // <= for the DOMContentLoaded function way above
