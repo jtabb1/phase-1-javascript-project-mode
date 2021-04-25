@@ -22,7 +22,9 @@ hr {
     grid-column: 2;
 }
 
-
+.remove-dots {
+    list-style: none;
+}
 
 /*
 .hidden {

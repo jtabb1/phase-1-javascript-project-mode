@@ -99,6 +99,7 @@ function plusOne(e) {
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = ++rating;
     recordRating(quoteId, rating);    // maybe show button
+    maybeShowMyFavesBtn();
 }
 
 function minusOne(e) {
@@ -108,12 +109,25 @@ function minusOne(e) {
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = --rating;
     recordRating(quoteId, rating);    // maybe show button
+    maybeShowMyFavesBtn();
 }
 
 function recordRating(quoteId, rating) {
     const dataDiv = document.getElementById('data-div');
     dataDiv.classList.add(quoteId);
     document.body.dataset[`rating${quoteId}`] = rating;
+}
+
+function maybeShowMyFavesBtn() {
+    if (numRatings() > 1) {
+        document.getElementById('show-other1').classList.remove('hidden');
+        document.getElementById('show-other2').classList.remove('hidden');
+    }
+}
+
+function numRatings() {
+    const dataDiv = document.getElementById('data-div');
+    return dataDiv.className.split(' ').length;
 }
 
 function addNavListeners() {
@@ -215,6 +229,7 @@ function makeFaveLi(fave){
     const author = document.body.dataset[`author${quoteId}`];
 
     const li = document.createElement('li');
+    li.className = 'remove-dots';
 
     const bq = document.createElement('blockquote');
     bq.classname = 'blockquote';
