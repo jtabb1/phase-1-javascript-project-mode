@@ -16,10 +16,29 @@ hr {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.center-btns {
+.left-btns {
     display: flex;
     justify-content: center;
+    /* display: flex; */
+    /* justify-content: right; */
+    /* align-self:center; */
+    grid-column: 1;
+}
+
+.center-btns {
+    display: flex;
+    justify-content:center;
     grid-column: 2;
+}
+
+.right-btns {
+    display: flex;
+    justify-content: center;
+    grid-column: 3;
+}
+
+#pNum1 {
+    size: 2;
 }
 
 .remove-dots {
@@ -50,4 +69,9 @@ button {
     padding: 5px;
     margin-bottom: 10px;
     box-shadow: 5px 5px 1px;
+}
+
+.page-number {
+    text-align: center;
+    
 }

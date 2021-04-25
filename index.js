@@ -1,10 +1,8 @@
-console.log('Hello.');
-
 const URL_BASE = 'https://api.quotable.io/'
 
 let numPages;
 let curPage = 1;
-const quotesPerPage = 2
+const quotesPerPage = 2; // This could be let once id system is changed
 let quoteNum;
 
 const showPanel = document.querySelector('#show-panel')
@@ -16,26 +14,33 @@ getQuotes(curPage).then(showQuotes).catch(console.log);
 addNavListeners();
 
 function getQuotes(page) {
-    // const limit = 2;
     const skip = (page - 1) * quotesPerPage;
     quoteNum = 1;
-    console.log(`${quotesPerPage}, ${skip}`);
     return fetch(`${URL_BASE}quotes?limit=${quotesPerPage}&skip=${skip}`)
     .then(r => r.json());
 }
 
 function showQuotes(jsonObj) {
-    console.log(jsonObj);
-    clearQuotesList();
+    prepareListForQuotes();
+    updatePageNumberDisplay();
     const list = document.querySelector('#quote-list')
+    numPages = Math.ceil(jsonObj.totalCount/quotesPerPage);
     jsonObj.results.forEach(quote => {
         const li = createQuoteLi(quote);
         list.append(li);
     });
 }
 
-function clearQuotesList() {
-    document.querySelector('#quote-list').innerHTML = '';
+function prepareListForQuotes() {
+    document.querySelector('#quotes-container').innerHTML = '';
+    const ul = document.createElement('ul');
+    ul.id = 'quote-list';
+    document.querySelector('#quotes-container').append(ul);
+}
+
+function updatePageNumberDisplay() {
+    document.querySelector('#page-num-display1').innerText = `Page ${curPage}`;
+    document.querySelector('#page-num-display2').innerText = `Page ${curPage}`;
 }
 
 function createQuoteLi(quote) {
@@ -79,21 +84,17 @@ function rateQuote(quoteId) {
     if (!!document.body.dataset[`rating${quoteId}`]) {
         return document.body.dataset[`rating${quoteId}`];
     }
-    return '0';
+    return '(unrated)';
 }
 
 // Can utilize the code below in slow network conditions
 // How do I branch in git
 function recordQuote(quote, quoteId) {
-    console.log(quoteId);
-
     document.body.dataset[`quote_${quoteId}`] = quote.content;
     document.body.dataset[`author${quoteId}`] = quote.author;
     document.body.dataset[`arSlug${quoteId}`] = quote.authorSlug;
     document.body.dataset[`themes${quoteId}`] = writeThemes(quote.tags);
 }
-
-
 
 function writeThemes(tags) {
     const len = tags.length;
@@ -109,7 +110,8 @@ function plusOne(e) {
     const elementId = e.target.id;
     const quoteId = elementId.slice(6);
     const inputRating = document.getElementById(`rating${quoteId}`);
-    rating = parseInt(inputRating.innerHTML);
+    let iR = parseInt(inputRating.innerHTML);
+    let rating = (!!iR) ? iR : 0;
     inputRating.innerHTML = ++rating;
     recordRating(quoteId, rating);
     maybeShowMyFavesBtn();
@@ -119,7 +121,8 @@ function minusOne(e) {
     const elementId = e.target.id;
     const quoteId = elementId.slice(6);
     const inputRating = document.getElementById(`rating${quoteId}`);
-    rating = parseInt(inputRating.innerHTML);
+    let iR = parseInt(inputRating.innerHTML);
+    let rating = (!!iR) ? iR : 0;
     inputRating.innerHTML = --rating;
     recordRating(quoteId, rating);
     maybeShowMyFavesBtn();
@@ -132,7 +135,7 @@ function recordRating(quoteId, rating) {
 }
 
 function maybeShowMyFavesBtn() {
-    if (numRatings() > 1) {
+    if (numRatings() > 0) {
         document.getElementById('show-other1').classList.remove('hidden');
         document.getElementById('show-other2').classList.remove('hidden');
     }
@@ -163,7 +166,7 @@ function addNavListeners() {
         showOther(e);
     });
     randomPageBtn1.addEventListener('click', () => {
-        1;
+        goToRandomPage();
     });
     backBtn2.addEventListener('click', () => {
         prevPage();
@@ -175,16 +178,27 @@ function addNavListeners() {
         showOther(e);
     });
     randomPageBtn2.addEventListener('click', () => {
-        2;
+        goToRandomPage();
     });
 }
 
-function getRandomPage() {
-    
+function goToRandomPage() {
+    curPage = getRandomInt(1, numPages + 1);
+    getQuotes(curPage).then(showQuotes);
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
 function nextPage() {
-    getQuotes(++curPage).then(showQuotes);
+    if (curPage >= numPages) {
+        return;
+    } else {
+        getQuotes(++curPage).then(showQuotes);
+    }
 }
 
 function prevPage() {
@@ -193,6 +207,32 @@ function prevPage() {
     } else {
         getQuotes(--curPage).then(showQuotes);
     }
+}
+
+function domChange4ShowMyFavorites() {
+        document.getElementById('show-other1').innerHTML = 'Continue Rating Quotes';
+        document.getElementById('show-other2').innerHTML = 'Continue Rating Quotes';
+        document.getElementById('forward1').classList.add('hidden');
+        document.getElementById('back1').classList.add('hidden');
+        document.getElementById('forward2').classList.add('hidden');
+        document.getElementById('back2').classList.add('hidden');
+        document.getElementById('random-page1').classList.add('hidden');
+        document.getElementById('random-page2').classList.add('hidden');
+        document.getElementById('page-num-display1').classList.add('hidden');
+        document.getElementById('page-num-display2').classList.add('hidden');
+}
+
+function domChange4ContinueRatingQuotes() {
+        document.getElementById('show-other1').innerHTML = 'Show My Favorites';
+        document.getElementById('show-other2').innerHTML = 'Show My Favorites';
+        document.getElementById('forward1').classList.remove('hidden');
+        document.getElementById('back1').classList.remove('hidden');
+        document.getElementById('forward2').classList.remove('hidden');
+        document.getElementById('back2').classList.remove('hidden');
+        document.getElementById('random-page1').classList.remove('hidden');
+        document.getElementById('random-page2').classList.remove('hidden');
+        document.getElementById('page-num-display1').classList.remove('hidden');
+        document.getElementById('page-num-display2').classList.remove('hidden');
 }
 
 function showOther(e) {
@@ -207,30 +247,12 @@ function showOther(e) {
 } 
 
 function showMyFavorites () {
-    clearQuotesList();
-    const quotesUl = document.getElementById("quote-list");
+    prepareTableForFavorites();
     const faves = getMyFavorites();
     faves.forEach( fave => {
-        quotesUl.append(makeFaveLi(fave));
+        appendTableRow(fave);
     });
-}
-
-function domChange4ShowMyFavorites() {
-        document.getElementById('show-other1').innerHTML = 'Continue Rating Quotes';
-        document.getElementById('show-other2').innerHTML = 'Continue Rating Quotes';
-        document.getElementById('forward1').classList.add('hidden');
-        document.getElementById('back1').classList.add('hidden');
-        document.getElementById('forward2').classList.add('hidden');
-        document.getElementById('back2').classList.add('hidden');
-}
-
-function domChange4ContinueRatingQuotes() {
-        document.getElementById('show-other1').innerHTML = 'Show My Favorites';
-        document.getElementById('show-other2').innerHTML = 'Show My Favorites';
-        document.getElementById('forward1').classList.remove('hidden');
-        document.getElementById('back1').classList.remove('hidden');
-        document.getElementById('forward2').classList.remove('hidden');
-        document.getElementById('back2').classList.remove('hidden');
+    appendTableListeners();
 }
 
 function getMyFavorites () {
@@ -243,18 +265,78 @@ function getMyFavorites () {
         ratingArr.push({rating: num, quoteId: qteId});
     })
     ratingArr.sort((a,b) => b.rating - a.rating);
-    console.log(ratingArr);
     return ratingArr;
 }
 
-function makeFaveLi(fave){
+function prepareTableForFavorites() {
+    document.querySelector('#quotes-container').innerHTML = '';
+    const table = document.createElement('table');
+    table.id = 'favorites-table';
+    table.innerHTML = `
+    <thead class='blue'>
+        <tr class='padding'>
+            <th class='padding center'>Rating</th>
+            <th class='padding center'>Quote</th>
+            <th class='padding center'>Un-Rate</th>
+            <th class='padding center'>Edit Rating</th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+    `;
+    document.querySelector('#quotes-container').append(table);
+}
+
+function appendTableRow(fave) {
+    const tableBody = document.getElementById("table-body");
+    tableBody.innerHTML += `<tr><td id="ratingTd${fave.quoteId}">${fave.rating}</td> <td id="divHere${fave.quoteId}"></td> <td><button id="unrateTd${fave.quoteId}" data-id="unrate" class="table-btns">Un-rate</button></td> <td><button id="reordrTd${fave.quoteId}" data-id="re-order" class="table-btns">Re-order</button><button id="minus1Td${fave.quoteId}" data-id="minus1" class="table-btns">minus 1</button><button id="plus1_Td${fave.quoteId}" data-id="plus1" class="table-btns">plus 1</button></td></tr>`
+    document.getElementById(`divHere${fave.quoteId}`).append(makeFaveDiv(fave)); //
+}
+
+function appendTableListeners() {
+    const btns = document.getElementsByClassName("table-btns");
+    for (let i=0; i<btns.length; i++) {
+        btns[i].addEventListener('click',handler)
+    }
+}
+
+function handler (e) {
+    const type = e.target.dataset.id;
+    const quoteId = e.target.id.slice(8);
+    const ratingTd = document.getElementById('ratingTd' + quoteId);
+    const iR = parseInt(ratingTd.innerHTML);
+    let rating = (!!iR) ? iR : 0;
+    switch(type) {
+        case "unrate":
+            removeFromRatings(quoteId);
+            break;
+        case "re-order":
+            showMyFavorites();
+            break;
+        case "minus1":
+            ratingTd.innerHTML = --rating;
+            recordRating(quoteId, rating);
+            break;
+        case "plus1":
+            ratingTd.innerHTML = ++rating;
+            recordRating(quoteId, rating);
+            break;
+        default:
+    }
+}
+
+function removeFromRatings(quoteId) {
+    document.body.dataset[`rating${quoteId}`] = '';
+    document.getElementById('ratingTd' + quoteId).innerHTML = '(unrated)';
+    document.getElementById('data-div').classList.remove(quoteId);
+}
+
+function makeFaveDiv(fave){
     const quoteId = fave.quoteId;
-    const rating = fave.rating;
-    const quote = rating + ': ' + document.body.dataset[`quote_${quoteId}`];
+    const quote = document.body.dataset[`quote_${quoteId}`];
     const author = document.body.dataset[`author${quoteId}`];
 
-    const li = document.createElement('li');
-    li.className = 'remove-dots';
+    const div = document.createElement('div');
 
     const bq = document.createElement('blockquote');
     bq.classname = 'blockquote';
@@ -265,14 +347,14 @@ function makeFaveLi(fave){
 
     const fr = document.createElement('footer');
     fr.className = 'blockquote-footer';
-    fr.innerHTML = author;
+    fr.innerHTML = '- ' + author;
 
     const br = document.createElement('br');
 
     bq.append(p, fr, br);
-    li.append(bq);
+    div.append(bq);
 
-    return li;
+    return div;
 }
 
 
