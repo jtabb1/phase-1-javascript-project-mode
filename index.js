@@ -2,7 +2,7 @@ const URL_BASE = 'https://api.quotable.io/'
 
 let numPages;
 let curPage = 1;
-const quotesPerPage = 2; // This could be let once id system is changed
+const quotesPerPage = 3; // This could be let once id system is changed
 let quoteNum;
 
 const showPanel = document.querySelector('#show-panel')
