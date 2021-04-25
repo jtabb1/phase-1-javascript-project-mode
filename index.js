@@ -10,7 +10,7 @@ const showPanel = document.querySelector('#show-panel')
 document.addEventListener("DOMContentLoaded", function() {
 
 // Function Call(s):
-getQuotes(curPage).then(showQuotes).catch(console.log);
+getQuotes(curPage).then(showFirstQuotes).catch(console.log);
 addNavListeners();
 
 function getQuotes(page) {
@@ -18,6 +18,14 @@ function getQuotes(page) {
     quoteNum = 1;
     return fetch(`${URL_BASE}quotes?limit=${quotesPerPage}&skip=${skip}`)
     .then(r => r.json());
+}
+
+function showFirstQuotes(jsonObj) {
+    prepareListForQuotes();
+    updatePageNumberDisplay();
+    const list = document.querySelector('#quote-list')
+    numPages = Math.ceil(jsonObj.totalCount/quotesPerPage);
+    goToRandomPage();
 }
 
 function showQuotes(jsonObj) {
@@ -184,7 +192,7 @@ function addNavListeners() {
 
 function goToRandomPage() {
     curPage = getRandomInt(1, numPages + 1);
-    getQuotes(curPage).then(showQuotes);
+    getQuotes(curPage).then(showQuotes).catch(console.log);
 }
 
 function getRandomInt(min, max) {
