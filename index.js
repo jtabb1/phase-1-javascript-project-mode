@@ -1,7 +1,11 @@
-console.log('hello');
+console.log('Hello.');
 
 const URL_BASE = 'https://api.quotable.io/'
+
+let numPages;
 let curPage = 1;
+const quotesPerPage = 2
+let quoteNum;
 
 const showPanel = document.querySelector('#show-panel')
 
@@ -12,13 +16,16 @@ getQuotes(curPage).then(showQuotes).catch(console.log);
 addNavListeners();
 
 function getQuotes(page) {
-    const limit = 2;
-    const skip = (page - 1) * limit;
-    return fetch(`${URL_BASE}quotes?limit=${limit}&skip=${skip}`)
+    // const limit = 2;
+    const skip = (page - 1) * quotesPerPage;
+    quoteNum = 1;
+    console.log(`${quotesPerPage}, ${skip}`);
+    return fetch(`${URL_BASE}quotes?limit=${quotesPerPage}&skip=${skip}`)
     .then(r => r.json());
 }
 
 function showQuotes(jsonObj) {
+    console.log(jsonObj);
     clearQuotesList();
     const list = document.querySelector('#quote-list')
     jsonObj.results.forEach(quote => {
@@ -32,6 +39,7 @@ function clearQuotesList() {
 }
 
 function createQuoteLi(quote) {
+    const quoteId = String(curPage).padStart(4,'0') + String(quoteNum).padStart(2,'0');
     const li = document.createElement('li');
     const br = document.createElement('br');
 
@@ -44,17 +52,17 @@ function createQuoteLi(quote) {
     sp.innerText = 'Your rating: ';
 
     const inputRating = document.createElement('span');
-    inputRating.id = `rating${quote._id}`;
-    inputRating.innerHTML = rateQuote(quote._id);
+    inputRating.id = `rating${quoteId}`;
+    inputRating.innerHTML = rateQuote(quoteId);
     p2.append(sp, inputRating);
 
     const minusBtn = document.createElement('button');
-    minusBtn.id = `minus1${quote._id}`;
+    minusBtn.id = `minus1${quoteId}`;
     minusBtn.innerHTML = 'Minus 1';
     minusBtn.addEventListener('click', minusOne);
 
     const plusBtn = document.createElement('button');
-    plusBtn.id = `plus1_${quote._id}`;
+    plusBtn.id = `plus1_${quoteId}`;
     plusBtn.innerHTML = 'Plus 1';
     plusBtn.addEventListener('click', plusOne);
 
@@ -62,7 +70,8 @@ function createQuoteLi(quote) {
     p3.append(br);
 
     li.append(p1, p2, minusBtn, plusBtn, p3);
-    recordQuote(quote);
+    recordQuote(quote, quoteId);
+    ++quoteNum;
     return li;
 }
 
@@ -70,17 +79,21 @@ function rateQuote(quoteId) {
     if (!!document.body.dataset[`rating${quoteId}`]) {
         return document.body.dataset[`rating${quoteId}`];
     }
-    return quoteId = '0';
+    return '0';
 }
 
 // Can utilize the code below in slow network conditions
 // How do I branch in git
-function recordQuote(quote) {
-    document.body.dataset[`quote_${quote._id}`] = quote.content;
-    document.body.dataset[`author${quote._id}`] = quote.author;
-    document.body.dataset[`arSlug${quote._id}`] = quote.authorSlug;
-    document.body.dataset[`themes${quote._id}`] = writeThemes(quote.tags);
+function recordQuote(quote, quoteId) {
+    console.log(quoteId);
+
+    document.body.dataset[`quote_${quoteId}`] = quote.content;
+    document.body.dataset[`author${quoteId}`] = quote.author;
+    document.body.dataset[`arSlug${quoteId}`] = quote.authorSlug;
+    document.body.dataset[`themes${quoteId}`] = writeThemes(quote.tags);
 }
+
+
 
 function writeThemes(tags) {
     const len = tags.length;
@@ -98,7 +111,7 @@ function plusOne(e) {
     const inputRating = document.getElementById(`rating${quoteId}`);
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = ++rating;
-    recordRating(quoteId, rating);    // maybe show button
+    recordRating(quoteId, rating);
     maybeShowMyFavesBtn();
 }
 
@@ -108,7 +121,7 @@ function minusOne(e) {
     const inputRating = document.getElementById(`rating${quoteId}`);
     rating = parseInt(inputRating.innerHTML);
     inputRating.innerHTML = --rating;
-    recordRating(quoteId, rating);    // maybe show button
+    recordRating(quoteId, rating);
     maybeShowMyFavesBtn();
 }
 
@@ -134,9 +147,11 @@ function addNavListeners() {
     let backBtn1 = document.querySelector('#back1'),
     forwardBtn1 = document.querySelector('#forward1'),
     showOtherBtn1 = document.querySelector('#show-other1'),
+    randomPageBtn1 = document.querySelector('#random-page1'),
     backBtn2 = document.querySelector('#back2'),
     forwardBtn2 = document.querySelector('#forward2'),
     showOtherBtn2 = document.querySelector('#show-other2');
+    randomPageBtn2 = document.querySelector('#random-page2');
 
     backBtn1.addEventListener('click', () => {
         prevPage();
@@ -147,6 +162,9 @@ function addNavListeners() {
     showOtherBtn1.addEventListener('click', (e) => {
         showOther(e);
     });
+    randomPageBtn1.addEventListener('click', () => {
+        1;
+    });
     backBtn2.addEventListener('click', () => {
         prevPage();
     });
@@ -156,6 +174,13 @@ function addNavListeners() {
     showOtherBtn2.addEventListener('click', (e) => {
         showOther(e);
     });
+    randomPageBtn2.addEventListener('click', () => {
+        2;
+    });
+}
+
+function getRandomPage() {
+    
 }
 
 function nextPage() {
