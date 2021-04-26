@@ -79,7 +79,7 @@ function createQuoteLi(quote) {
     plusBtn.innerHTML = 'Plus 1';
     plusBtn.addEventListener('click', plusOne);
 
-    const p3 = document.createElement('p'); // do I have to append the br to the p3 just to get that space
+    const p3 = document.createElement('p');
     p3.append(br);
 
     li.append(p1, p2, minusBtn, plusBtn, p3);
@@ -95,8 +95,6 @@ function rateQuote(quoteId) {
     return '(unrated)';
 }
 
-// Can utilize the code below in slow network conditions
-// How do I branch in git
 function recordQuote(quote, quoteId) {
     document.body.dataset[`quote_${quoteId}`] = quote.content;
     document.body.dataset[`author${quoteId}`] = quote.author;
@@ -251,10 +249,7 @@ function showOther(e) {
         showMyFavorites();
         domChange4ShowMyFavorites();
     } else {
-            // console.log('hi');
-            // console.log(numRatings());
         if (numRatings() === 0) {
-            // console.log('hello');
             document.getElementById('show-other1').classList.add('hidden');
             document.getElementById('show-other2').classList.add('hidden');
         }
@@ -385,6 +380,4 @@ function makeFaveDiv(fave){
     return div;
 }
 
-
 }); // <= for the DOMContentLoaded function way above
-
