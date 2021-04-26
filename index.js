@@ -1,7 +1,7 @@
 const URL_BASE = 'https://api.quotable.io/'
 
 let numPages;
-let curPage = 1;
+let curPage = 1; 
 const quotesPerPage = 3; // This could be let once id system is changed
 let quoteNum;
 
