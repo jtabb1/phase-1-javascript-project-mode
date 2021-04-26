@@ -151,6 +151,8 @@ function maybeShowMyFavesBtn() {
 
 function numRatings() {
     const dataDiv = document.getElementById('data-div');
+    const len = dataDiv.className.split(' ')[0].length;
+    if (len===0) return 0;
     return dataDiv.className.split(' ').length;
 }
 
@@ -249,6 +251,13 @@ function showOther(e) {
         showMyFavorites();
         domChange4ShowMyFavorites();
     } else {
+            // console.log('hi');
+            // console.log(numRatings());
+        if (numRatings() === 0) {
+            // console.log('hello');
+            document.getElementById('show-other1').classList.add('hidden');
+            document.getElementById('show-other2').classList.add('hidden');
+        }
         getQuotes(curPage).then(showQuotes).catch(console.log);
         domChange4ContinueRatingQuotes();
     }
@@ -319,6 +328,13 @@ function handler (e) {
             removeFromRatings(quoteId);
             break;
         case "re-order":
+            if (numRatings()===0) {
+                getQuotes(curPage).then(showQuotes).catch(console.log);
+                document.getElementById('show-other1').classList.add('hidden');
+                document.getElementById('show-other2').classList.add('hidden');
+                domChange4ContinueRatingQuotes();
+                return;
+            }
             showMyFavorites();
             break;
         case "minus1":
@@ -336,7 +352,11 @@ function handler (e) {
 function removeFromRatings(quoteId) {
     document.body.dataset[`rating${quoteId}`] = '';
     document.getElementById('ratingTd' + quoteId).innerHTML = '(unrated)';
+    console.log('h1');
+    console.log(numRatings());
     document.getElementById('data-div').classList.remove(quoteId);
+    console.log('h2');
+    console.log(numRatings());
 }
 
 function makeFaveDiv(fave){
