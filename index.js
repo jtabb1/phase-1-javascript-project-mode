@@ -233,8 +233,8 @@ function domChange4ShowMyFavorites() {
 }
 
 function domChange4ContinueRatingQuotes() {
-        document.getElementById('show-other1').innerHTML = 'Show My Favorites';
-        document.getElementById('show-other2').innerHTML = 'Show My Favorites';
+        document.getElementById('show-other1').innerHTML = 'Show My Favorite(s)';
+        document.getElementById('show-other2').innerHTML = 'Show My Favorite(s)';
         document.getElementById('forward1').classList.remove('hidden');
         document.getElementById('back1').classList.remove('hidden');
         document.getElementById('forward2').classList.remove('hidden');
@@ -247,7 +247,7 @@ function domChange4ContinueRatingQuotes() {
 
 function showOther(e) {
     const msg = e.target.innerHTML;
-    if (msg === "Show My Favorites") {
+    if (msg === "Show My Favorite(s)") {
         showMyFavorites();
         domChange4ShowMyFavorites();
     } else {
