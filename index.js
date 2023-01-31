@@ -120,6 +120,8 @@ function plusOne(e) {
     let rating = (!!iR) ? iR : 0;
     inputRating.innerHTML = ++rating;
     recordRating(quoteId, rating);
+    const audioPos = new Audio('mixkit-fast-small-sweep-transition-166.wav');
+    audioPos.play();
     maybeShowMyFavesBtn();
 }
 
@@ -131,6 +133,8 @@ function minusOne(e) {
     let rating = (!!iR) ? iR : 0;
     inputRating.innerHTML = --rating;
     recordRating(quoteId, rating);
+    const audioNeg = new Audio('mixkit-cinematic-tunnel-reverb-woosh-1486.wav');
+    audioNeg.play();
     maybeShowMyFavesBtn();
 }
 
@@ -339,10 +343,14 @@ function handler (e) {
         case "minus1":
             ratingTd.innerHTML = --rating;
             recordRating(quoteId, rating);
+            const audioNeg = new Audio('mixkit-cinematic-tunnel-reverb-woosh-1486.wav');
+            audioNeg.play();
             break;
         case "plus1":
             ratingTd.innerHTML = ++rating;
             recordRating(quoteId, rating);
+            const audioPos = new Audio('mixkit-fast-small-sweep-transition-166.wav');
+            audioPos.play();
             break;
         default:
     }
