@@ -175,6 +175,8 @@ function addNavListeners() {
     });
     randomPageBtn1.addEventListener('click', () => {
         goToRandomPage();
+        const audio = new Audio('mixkit-retro-game-notification-212.wav');
+        audio.play();
     });
     backBtn2.addEventListener('click', () => {
         prevPage();
@@ -187,6 +189,8 @@ function addNavListeners() {
     });
     randomPageBtn2.addEventListener('click', () => {
         goToRandomPage();
+        const audio = new Audio('mixkit-retro-game-notification-212.wav');
+        audio.play();
     });
 }
 
